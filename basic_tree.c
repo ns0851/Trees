@@ -8,11 +8,6 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
-struct Node {
-    int data;
-    struct Node *next;
-};
-
 void printTree(struct TreeNode *node) {
     if(node == NULL) return;
 
@@ -28,7 +23,7 @@ void inorder(struct TreeNode *node) {
     inorder(node->right);
 }
 
-// ----------------------------------------START INSERTION-------------------------------------------------//
+// ----------------------------------------START INSERTION------------------------------------------------ //
 
 struct TreeNode *insert(struct TreeNode *node, int data) {
     if(node == NULL) {
@@ -52,9 +47,9 @@ struct TreeNode *findMin(struct TreeNode *node) {
     return node;
 }
 
-// ----------------------------------------END DELETION-------------------------------------------------//
+// --------------------------------------#### END DELETION ####-------------------------------------------- //
 
-// ----------------------------------------START DELETION-------------------------------------------------//
+// -------------------------------------#### START DELETION ####------------------------------------------- //
 struct TreeNode *delete(struct TreeNode *node, int data) {
     if(node == NULL) return NULL;
     if(node->val == data) {
@@ -87,10 +82,10 @@ struct TreeNode *delete(struct TreeNode *node, int data) {
     return node;
 }
 
-// ----------------------------------------END DELETION-------------------------------------------------//
+// --------------------------------------- ####END DELETION ####------------------------------------------- //
 
 
-// --------------------------------START BFS(STUPID WAY)-----------------------------------------------//
+// ----------------------------------#### START BFS(STUPID WAY) ####----------------------------------------//
 int getCount(struct TreeNode *node) {
     if(node == NULL) return 0;
     return 1 + getCount(node->left) + getCount(node->right);
@@ -133,10 +128,10 @@ void bfs(struct TreeNode *node) {
     free(arr);
 }
 
-// --------------------------------END BFS(STUPID WAY)-----------------------------------------------//
+// -----------------------------------#### END BFS(STUPID WAY) ####---------------------------------------- //
 
 
-// --------------------------------START BFS(NOT SO STUPID WAY)---------------------------------------//
+// ------------------------------#### START BFS(NOT SO STUPID WAY) ####------------------------------------ //
 
 
 void bfs2(struct TreeNode *node) {
@@ -162,11 +157,32 @@ void bfs2(struct TreeNode *node) {
             
         front++;
     }
-    
     free(arr);
 }
 
-// --------------------------------END BFS(NOT SO STUPID WAY)-----------------------------------------------//
+// --------------------------------- ####END BFS(NOT SO STUPID WAY) ####----------------------------------- //
+
+// --------------------------------------- ####START Search ####------------------------------------------- //
+
+struct TreeNode *search(struct TreeNode *node, int data) {
+    while(node!=NULL) {
+        if(data==node->val) return node;
+        if(data < node->val) node=node->left;
+        else if(data > node->val) node=node->right;
+    }
+    return NULL;
+}
+
+// ---------------------------------------- ####END Search ####-------------------------------------------- //
+
+
+void freeTree(struct TreeNode *node) {
+    if(!node) return;
+    freeTree(node->left);
+    freeTree(node->right);
+    free(node);
+}
+
 
 int main() {
     struct TreeNode *node = malloc(sizeof(struct TreeNode));
@@ -182,12 +198,18 @@ int main() {
     insert(node, 3);
     insert(node, 7);
 
-    inorder(node);
-    delete(node, 5);
+    // inorder(node);
+    // delete(node, 5);
 
     inorder(node);
     printf("\n");
 
     bfs2(node);
+
+    printf("\n");
+    if(search(node,6)==NULL)printf("Not Found!!");
+    else printf("Found");
+    
+    freeTree(node);
     return 0;
 }
